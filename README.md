@@ -1,4 +1,4 @@
-# hello-world
+# emacs init.el
 my first repository
 
-I'm learning Python programming, and wanna use this repository to practice the use of github for storing my codes of Python.
+for my own emacs configuration
