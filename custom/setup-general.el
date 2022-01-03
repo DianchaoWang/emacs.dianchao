@@ -1,8 +1,38 @@
-(menu-bar-mode -1)
-(tool-bar-mode -1)
+
+(setq inhibit-startup-message t)
+
+(scroll-bar-mode -1)        ; Disable visible scrollbar
+(tool-bar-mode -1)          ; Disable the toolbar
+(tooltip-mode -1)           ; Disable tooltips
+(set-fringe-mode 10)        ; Give some breathing room
+
+(menu-bar-mode -1)            ; Disable the menu bar
+
+;; Set up the visible bell
+(setq visible-bell t)
+
+;; (load-theme 'tango-dark)
+
+;; Make ESC quit prompts
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+(global-set-key "\C-x2" (lambda() (interactive)(split-window-vertically) (other-window 1)))
+(global-set-key "\C-x3" (lambda() (interactive)(split-window-horizontally) (other-window 1)))
+
+;; Disable line numbers for some modes
+(dolist (mode '(org-mode-hook
+                term-mode-hook
+                shell-mode-hook
+                treemacs-mode-hook
+                eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+(column-number-mode)
+(global-display-line-numbers-mode t)
+
+;; (use-package command-log-mode)
 
 (setq gc-cons-threshold 100000000)
-(setq inhibit-startup-message t)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -12,7 +42,7 @@
             (setq show-trailing-whitespace 1)))
 
 ;; use space to indent by default
-(setq-default indent-tabs-mode nil)
+;;(setq-default indent-tabs-mode t)
 
 ;; set appearance of a tab that is represented by 4 spaces
 (setq-default tab-width 4)
@@ -41,10 +71,10 @@
 ;; (define-key c++-mode-map  [(control tab)] 'company-complete)
 
 ;; Package: projejctile
-(use-package projectile
-  :init
-  (projectile-global-mode)
-  (setq projectile-enable-caching t))
+;;(use-package projectile
+  ;;:init
+  ;;(projectile-global-mode)
+  ;;(setq projectile-enable-caching t))
 
 ;; Package zygospore
 (use-package zygospore
@@ -56,5 +86,7 @@
 ;; activate whitespace-mode to view all whitespace characters
 (global-set-key (kbd "C-c w") 'whitespace-mode)
 (windmove-default-keybindings)
+
+(use-package sr-speedbar)
 
 (provide 'setup-general)
