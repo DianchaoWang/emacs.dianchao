@@ -30,6 +30,15 @@
 (column-number-mode)
 (global-display-line-numbers-mode t)
 
+;; Make frame transparency overridable
+(defvar mine/frame-transparency '(90 . 90))
+
+;; Set frame transparency
+(set-frame-parameter (selected-frame) 'alpha mine/frame-transparency)
+(add-to-list 'default-frame-alist `(alpha . ,mine/frame-transparency))
+(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 ;; (use-package command-log-mode)
 
 (setq gc-cons-threshold 100000000)

@@ -34,6 +34,12 @@
   (pcase exwm-class-name
     ("Firefox" (exwm-workspace-rename-buffer (format "Firefox: %s" exwm-title)))))
 
+(defun exwmc/set-wallpaper ()
+  (interactive)
+  ;; NOTE: You will need to update this to a valid background path!
+  (start-process-shell-command
+   "feh" nil  "feh --bg-scale /usr/share/backgrounds/Focal-Fossa_WP_4096x2304_GREY.png"))
+
 (use-package exwm
   :config
   ;; Set the default number of workspaces
@@ -67,6 +73,8 @@
   (require 'exwm-randr)
   (exwm-randr-enable)
   ;; (start-process-shell-command "xrandr" nil "xrandr --output Virtual1 --primary --scale 0.66x0.66 -xos 0x0 --rotate normal --output Virtual2 --off --output Virtual3 --off --output Virtual4 --off --output Virtual5 --off --output Virtual6 --off --output Virtual7 --off --output Virtual8 --off")
+
+  (exwmc/set-wallpaper)
 
   (require 'exwm-systemtray)
   (setq exwm-systemtray-height 24)
