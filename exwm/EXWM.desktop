@@ -1,3 +1,4 @@
+# ln -f "this file" to /usr/share/xsessions/EXWM.desktop
 [Desktop Entry]
 Name=EXWM
 Comment=Emacs Window Manager
