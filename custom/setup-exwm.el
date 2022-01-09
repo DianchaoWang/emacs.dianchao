@@ -40,6 +40,15 @@
   (start-process-shell-command
    "feh" nil  "feh --bg-scale /usr/share/backgrounds/Focal-Fossa_WP_4096x2304_GREY.png"))
 
+(defun exwmc/configure-window-by-class ()
+  (interactive)
+  ;;(message "Window '%s' appeared!" exwm-class-name)
+  (pcase exwm-class-name
+    ("Firefox" (exwm-workspace-move-window 2)
+     ;;(exwm-floating-toggle-floating)
+     ;;(exwm-layout-toggle-mode-line)
+     )))
+
 (use-package exwm
   :config
   ;; Set the default number of workspaces
@@ -53,6 +62,9 @@
 
   ;; When EXWM starts up, do some extra configuration
   (add-hook 'exwm-init-hook #'exwmc/exwm-init-hook)
+
+  ;; Configure window as they're created
+  ;;(add-hook 'exwm-manage-finish-hook #'exwmc/configure-window-by-class)
 
   ;; These keys should always pass through to Emacs
   (setq exwm-input-prefix-keys
