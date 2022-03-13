@@ -25,15 +25,18 @@
 
 (require 'setup-exwm)
 
-;;(require 'setup-lsp)
+(require 'setup-lsp)
 
-(if (version< emacs-version "24.4")
-    (require 'setup-ivy-counsel)
-  (require 'setup-helm)
-  (require 'setup-helm-gtags))
+(require 'setup-dap)
+
+(require 'setup-python-ide)
+;;(if (version< emacs-version "24.4")
+;;    (require 'setup-ivy-counsel)
+;;  (require 'setup-helm)
+;;  (require 'setup-helm-gtags))
 ;; (require 'setup-ggtags)
-(require 'setup-cedet)
-(require 'setup-editing)
+;;(require 'setup-cedet)
+;;(require 'setup-editing)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -145,7 +148,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (multi-term emacsql-sqlite-executable sr-speedbar org-bullets forge which-key use-package typescript-mode rainbow-delimiters magit lsp-mode ivy-rich helpful general exwm doom-themes doom-modeline counsel-projectile command-log-mode))))
+	(dap-mode lsp-ivy lsp-ive lsp-treemacs lsp-ui company-box company-mode multi-term emacsql-sqlite-executable sr-speedbar org-bullets forge which-key use-package typescript-mode rainbow-delimiters magit lsp-mode ivy-rich helpful general exwm doom-themes doom-modeline counsel-projectile command-log-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
