@@ -1,14 +1,18 @@
-;; exwm setup
-(defun exwmc/run-in-background (command)
+;;; setup-exwm --- exwm config
+;;; Commentary:
+
+;;; Code:
+(defun chwang/run-in-background (command)
+  "COMMAND."
   (let ((command-parts (split-string command "[ ]+")))
     (apply #'call-process `(,(car command-parts) nil 0 nil ,@(cdr command-parts)))))
 
-(defun exwmc/exwm-init-hook ()
-  ;; Make workspace 1 be the one where we land at startup
+(defun chwang/exwm-init-hook ()
+  "Make workspace 1 be the one where we land at startup."
   ;;(exwm-workspace-switch-create 1)
 
   ;; Open multi-term by default
-  (require 'multi-term)
+  (use-package multi-term)
   (setq multi-term-program "/bin/bash")
   (multi-term)
 
@@ -17,32 +21,43 @@
 
   ;; Show the time and date in mode line
   (setq display-time-day-and-date t)
+  (defvar display-time-format)
   (setq display-time-format "%F:%R")
   (display-time-mode 1)
 
   ;; Launch apps that will run in the background
-  (exwmc/run-in-background "dunst")
-  (exwmc/run-in-background "nm-applet")
-  (exwmc/run-in-background "pasystray")
-  (exwmc/run-in-background "blueman-applet")
+  (chwang/run-in-background "dunst")
+  (chwang/run-in-background "nm-applet")
+  (chwang/run-in-background "pasystray")
+  (chwang/run-in-background "blueman-applet")
   )
 
-(defun exwmc/exwm-update-class ()
+(defun chwang/exwm-update-class ()
+  "Make the workspace to display the name of its class."
+  (defvar exwm-class-name)
   (exwm-workspace-rename-buffer exwm-class-name))
 
-(defun exwmc/exwm-update-title ()
+(require 'exwm-workspace)
+
+(defun chwang/exwm-update-title ()
+  "Update workspace buffer title."
+  (defvar exwm-class-name)
+  (defvar exwm-title)
   (pcase exwm-class-name
     ("Firefox" (exwm-workspace-rename-buffer (format "Firefox: %s" exwm-title)))))
 
-(defun exwmc/set-wallpaper ()
+(defun chwang/set-wallpaper ()
+  "Set wallpaper."
   (interactive)
   ;; NOTE: You will need to update this to a valid background path!
   (start-process-shell-command
    "feh" nil  "feh --bg-scale /usr/share/backgrounds/Focal-Fossa_WP_4096x2304_GREY.png"))
 
-(defun exwmc/configure-window-by-class ()
+(defun chwang/configure-window-by-class ()
+  "Configure window per class name."
   (interactive)
   ;;(message "Window '%s' appeared!" exwm-class-name)
+  (defvar exwm-class-name)
   (pcase exwm-class-name
     ("Firefox" (exwm-workspace-move-window 2)
      ;;(exwm-floating-toggle-floating)
@@ -55,16 +70,16 @@
   (setq exwm-workspace-number 8)
 
   ;; When window "class" updates, use it to set the buffer name
-  (add-hook 'exwm-update-class-hook #'exwmc/exwm-update-class)
+  (add-hook 'exwm-update-class-hook #'chwang/exwm-update-class)
 
   ;; When window title updates, use it to set the buffer name
-  (add-hook 'exwm-update-title-hook #'exwmc/exwm-update-title)
+  (add-hook 'exwm-update-title-hook #'chwang/exwm-update-title)
 
   ;; When EXWM starts up, do some extra configuration
-  (add-hook 'exwm-init-hook #'exwmc/exwm-init-hook)
+  (add-hook 'exwm-init-hook #'chwang/exwm-init-hook)
 
   ;; Configure window as they're created
-  ;;(add-hook 'exwm-manage-finish-hook #'exwmc/configure-window-by-class)
+  ;;(add-hook 'exwm-manage-finish-hook #'chwang/configure-window-by-class)
 
   ;; These keys should always pass through to Emacs
   (setq exwm-input-prefix-keys
@@ -83,13 +98,15 @@
 
   ;; Set the screen resolution
   (require 'exwm-randr)
+  (declare-function exwm-randr-enable "exwm-randr" ())
   (exwm-randr-enable)
   ;; (start-process-shell-command "xrandr" nil "xrandr --output Virtual1 --primary --scale 0.66x0.66 -xos 0x0 --rotate normal --output Virtual2 --off --output Virtual3 --off --output Virtual4 --off --output Virtual5 --off --output Virtual6 --off --output Virtual7 --off --output Virtual8 --off")
 
-  (exwmc/set-wallpaper)
+  (chwang/set-wallpaper)
 
   (require 'exwm-systemtray)
-  (setq exwm-systemtray-height 24)
+  (defvar exwm-systemtray-height 24)
+  (declare-function exwm-systemtray-enable "exwm-systemtray" ())
   (exwm-systemtray-enable)
 
   ;; Set up global key bindings.  These always work, no matter the input state!
@@ -127,3 +144,4 @@
   (exwm-enable))
 
 (provide 'setup-exwm)
+;;; setup-exwm.el ends here

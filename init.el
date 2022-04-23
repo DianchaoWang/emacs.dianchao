@@ -1,4 +1,7 @@
+;;; init.el --- emacs initialization entry
+;;; Commentary:
 
+;;; Code:
 ;; Initialize package sources
 (require 'package)
 
@@ -10,7 +13,7 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-  ;; Initialize use-package on non-Linux platforms
+;; Initialize use-package on non-Linux platforms
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
@@ -19,7 +22,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(add-to-list 'load-path "~/.emacs.d/custom")
+;;(add-to-list 'load-path "~/.emacs.d/custom")
+(eval-when-compile
+  (push (expand-file-name "custom" user-emacs-directory) load-path))
 
 (require 'setup-general)
 
@@ -27,9 +32,7 @@
 
 (require 'setup-lsp)
 
-(require 'setup-dap)
-
-(require 'setup-python-ide)
+(require 'setup-hydra-build)
 ;;(if (version< emacs-version "24.4")
 ;;    (require 'setup-ivy-counsel)
 ;;  (require 'setup-helm)
@@ -81,9 +84,6 @@
 (use-package doom-themes
   :init (load-theme 'doom-dracula t))
 
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
-
 (use-package which-key
   :defer 0
   :diminish which-key-mode
@@ -102,8 +102,6 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
-(use-package all-the-icons)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package projectile
@@ -114,8 +112,8 @@
   ("C-c p" . projectile-command-map)
   :init
   ;; NOTE: Set this to the folder where you keep your Git repos!
-  (when (file-directory-p "~/")
-    (setq projectile-project-search-path '("~/")))
+  (when (file-directory-p "~/Projects")
+    (setq projectile-project-search-path '("~/Projects")))
   (setq projectile-switch-project-action #'projectile-dired))
 
 (use-package counsel-projectile
@@ -148,10 +146,11 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-	(dap-mode lsp-ivy lsp-ive lsp-treemacs lsp-ui company-box company-mode multi-term emacsql-sqlite-executable sr-speedbar org-bullets forge which-key use-package typescript-mode rainbow-delimiters magit lsp-mode ivy-rich helpful general exwm doom-themes doom-modeline counsel-projectile command-log-mode))))
+	(pretty-hydra-config pretty-hydra srefactor ccls flycheck-pos-tip flycheck python-mode dap-mode lsp-ivy lsp-ive lsp-treemacs lsp-ui company-box company-mode multi-term emacsql-sqlite-executable sr-speedbar org-bullets forge which-key use-package typescript-mode rainbow-delimiters magit lsp-mode ivy-rich helpful general exwm doom-themes doom-modeline counsel-projectile command-log-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+;;; init.el ends here
